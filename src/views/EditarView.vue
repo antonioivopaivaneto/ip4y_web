@@ -4,7 +4,7 @@
 
 
       <div class="w-3/4 ml-60 dark:bg-[#252525] rounded dark:border-gray-9000 p-5   ">
-        <RouterLink class="bg-yellow-600 px-5 py-3 rounded font-bold text-white mb-10" to="/">Home</RouterLink>
+        <RouterLink class="bg-yellow-600 px-5 py-3 rounded font-bold text-white mb-10" to="/listar">Voltar</RouterLink>
 
         <img :src="logo" alt="" width="300" class="mt-16">
 
@@ -70,9 +70,8 @@
           </div>
 
           <div class="flex">
-            <button type="submit" class="bg-green-600 px-5 py-3 rounded font-bold text-white mx-5">Inserir</button>
-            <button type="reset" class="bg-green-500 px-5 py-3 rounded font-bold text-white mx-5"
-              @click="recomecar()">Recomeçar</button>
+            <button type="submit" class="bg-green-600 px-5 py-3 rounded font-bold text-white ">Atualizar</button>
+            
           </div>
         </form>
 
@@ -89,10 +88,11 @@
 <script setup>
 import logo from './../assets/img/logo.svg'
 import resource from '../http/pessoas';
-
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import axios from 'axios';
+import {useRoute} from 'vue-router';
 
+const route = useRoute();
 const errors = ref({})
 const status = ref(false)
 
@@ -116,11 +116,25 @@ const recomecar = () => {
 
 }
 
+const getData = async () => {
+    const {data} = await axios.get(resource+ route.params.id)
+    formData.cpf = data.data.cpf,
+    formData.nome = data.data.nome,
+    formData.sobrenome = data.data.sobrenome,
+    formData.data_de_nascimento = data.data.data_de_nascimento,
+    formData.email = data.data.email,
+    formData.genero = data.data.genero
+
+}
+
+onMounted(getData);
+
 const submit = async () => {
   errors.value= ({})
 
   try {
-    const data = await axios.post(resource, formData)
+    const id = route.params.id
+    const data = await axios.put(resource +id, formData)
     status.value = true
 
   } catch (error) {
