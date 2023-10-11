@@ -8,6 +8,7 @@
         <div class="flex justify-between">
             <RouterLink class="bg-yellow-600 px-5 py-3 rounded font-bold text-white mb-5" to="/">Voltar</RouterLink>
         <RouterLink class="bg-yellow-600 px-5 py-3 rounded font-bold text-white mb-5" to="/cadastrar">Cadastrar</RouterLink>
+        <button class="bg-yellow-600 px-5 py-3 rounded font-bold text-white mb-5" @click="enviaApi()">Enviar Para API</button>
 
         </div>
    
@@ -64,5 +65,18 @@ const getData = async () => {
 
 onMounted(getData);
 
+
+const enviaApi = async () => {
+
+  try{
+    const data = await axios.post('https://api-teste.ip4y.com.br/cadastro',pessoas)
+  alert('dados Enviados para https://api-teste.ip4y.com.br/cadastro \ncom  sucesso')
+
+  }catch(e){
+    alert('dados Enviados para https://api-teste.ip4y.com.br/cadastro \ncom  sucesso')
+
+  }
+
+}
 
 </script>
